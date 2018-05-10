@@ -6,17 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class ConnectionActivity extends AppCompatActivity {
 
-    private Button loginButton;
+    Button stopConnectionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_connection);
 
-        loginButton = findViewById(R.id.loginButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        stopConnectionButton = findViewById(R.id.stopConnectionButton);
+        stopConnectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openHomeActivity();
