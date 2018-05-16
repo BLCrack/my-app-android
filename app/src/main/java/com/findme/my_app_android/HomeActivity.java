@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.findme.my_app_android.models.Location;
+
 public class HomeActivity extends AppCompatActivity {
 
     Button startConnectionButton;
