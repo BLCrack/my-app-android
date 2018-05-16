@@ -26,8 +26,8 @@
         android:id="@+id/textView6"
         android:layout_width="159dp"
         android:layout_height="40dp"
-        android:layout_above="@+id/editText4"
-        android:layout_alignStart="@+id/editText4"
+        android:layout_above="@+id/loginEditText"
+        android:layout_alignStart="@+id/loginEditText"
         android:layout_marginBottom="-161dp"
         android:text="Login"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
@@ -39,7 +39,7 @@
         app:layout_constraintVertical_bias="0.273" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/loginEditText"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -69,7 +69,7 @@
         app:layout_constraintVertical_bias="0.567" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/passwordEditText"
         android:layout_width="357dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView7"
