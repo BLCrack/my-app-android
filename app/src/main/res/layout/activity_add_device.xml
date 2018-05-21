@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddDeviceActivity">
+
+    <EditText
+        android:id="@+id/connectionNameEditText"
+        android:layout_width="345dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/connectionNameTextView"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/deviceNameTextView"
+        android:layout_width="348dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="219dp"
+        android:text="Model urządzenia"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <TextView
+        android:id="@+id/phoneNumberTextView"
+        android:layout_width="348dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Nr telefonu"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <TextView
+        android:id="@+id/connectionNameTextView"
+        android:layout_width="348dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="119dp"
+        android:text="Nazwa połączenia"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <Button
+        android:id="@+id/newDeviceAcceptButton"
+        android:layout_width="118dp"
+        android:layout_height="61dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="54dp"
+        android:text="OK" />
+
+    <EditText
+        android:id="@+id/phoneNumberEditText"
+        android:layout_width="349dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/phoneNumberTextView"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/deviceNameEditText"
+        android:layout_width="345dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/deviceNameTextView"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:inputType="textPersonName" />
+</RelativeLayout>

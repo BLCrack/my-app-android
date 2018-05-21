@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if(isRegistered)
-                    openHomeActivity();
+                    openAddDeviceActivity();
                 else
                 {
                     openAlert(v);
@@ -70,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         restAPI = retrofit.create(RESTAPInterface.class);
 
-        fetchData();
+        getAllUsers();
     }
 
-    private void fetchData() {
+    private void getAllUsers() {
         compositeDisposable.add(restAPI.getUsers()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
                 }));
     }
 
-    public void openHomeActivity(){
-        Intent intent = new Intent(this, HomeActivity.class);
+    public void openAddDeviceActivity(){
+        Intent intent = new Intent(this, DeviceChoiceActivity.class);
         startActivity(intent);
     }
 

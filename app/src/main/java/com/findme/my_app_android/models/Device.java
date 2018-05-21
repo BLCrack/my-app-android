@@ -4,19 +4,19 @@ import java.sql.Date;
 
 public class Device {
     private int id;
+    private int phoneNumber;
     private String connectionName;
     private String deviceName;
-    private int historyDays;
     private Date startConnection;
     private Location actualLocation;
     private User owner;
 
 
-    public Device(int id, String connectionName, String deviceName, int historyDays, Date startConnection, Location actualLocation, User owner) {
+    public Device(int id, int phoneNumber, String connectionName, String deviceName, Date startConnection, Location actualLocation, User owner) {
         this.id = id;
+        this.phoneNumber = phoneNumber;
         this.connectionName = connectionName;
         this.deviceName = deviceName;
-        this.historyDays = historyDays;
         this.startConnection = startConnection;
         this.actualLocation = actualLocation;
         this.owner = owner;
@@ -28,6 +28,14 @@ public class Device {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getConnectionName() {
@@ -44,14 +52,6 @@ public class Device {
 
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
-    }
-
-    public int getHistoryDays() {
-        return historyDays;
-    }
-
-    public void setHistoryDays(int historyDays) {
-        this.historyDays = historyDays;
     }
 
     public Date getStartConnection() {
