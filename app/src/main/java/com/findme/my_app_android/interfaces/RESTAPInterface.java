@@ -3,6 +3,8 @@ package com.findme.my_app_android.interfaces;
 import com.findme.my_app_android.models.Device;
 import com.findme.my_app_android.models.Location;
 import com.findme.my_app_android.models.User;
+import com.findme.my_app_android.models.UserCredentials;
+import com.findme.my_app_android.security.TokenHolder;
 
 import java.util.List;
 
@@ -28,4 +30,8 @@ public interface RESTAPInterface {
     //locations
     @POST("/locations/add")
     Call<Location> updateLocation(@Body Location location);
+
+    //security authentication
+    @POST("/login")
+    Call<TokenHolder> login(@Body UserCredentials userCredentials);
 }

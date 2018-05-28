@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.findme.my_app_android.interfaces.RESTAPInterface;
 import com.findme.my_app_android.models.User;
+import com.findme.my_app_android.models.UserCredentials;
+import com.findme.my_app_android.security.TokenHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Init API
+        Retrofit retrofit = RetrofitClient.getInstance();
+        restAPI = retrofit.create(RESTAPInterface.class);
+
+        //getAllUsers();
+
         loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,29 +60,29 @@ public class MainActivity extends AppCompatActivity {
                 String password = passwordEditText.getText().toString();
                 Log.d("login: ", login);
                 Log.d("password: ", password);
+                UserCredentials userCredentials = new UserCredentials();
+                userCredentials.username=login;
+                userCredentials.password=password;
 
+                login(userCredentials, v);
                 //sprawdzenie czy istnieje taki użytkownik i jesli tak to zalogowanie
-                boolean isRegistered = false;
+                /*boolean isRegistered = false;
                 for(User u : users)
                 {
-                    if((u.getLogin().equals(login)) && (u.getPassword().equals(password)))
+                    if((u.getLogin().equals(login)) && (u.getPassword().equals(password))){
                         isRegistered = true;
+                        loginUser = u;
+                    }
                 }
 
                 if(isRegistered)
-                    openAddDeviceActivity();
+                    openDeviceChoiceActivity();
                 else
                 {
                     openAlert(v);
-                }
+                }*/
             }
         });
-
-        //Init API
-        Retrofit retrofit = RetrofitClient.getInstance();
-        restAPI = retrofit.create(RESTAPInterface.class);
-
-        getAllUsers();
     }
 
     private void getAllUsers() {
@@ -87,7 +99,32 @@ public class MainActivity extends AppCompatActivity {
                 }));
     }
 
-    public void openAddDeviceActivity(){
+    private void login(UserCredentials userCredentials, final View v){
+        Call<TokenHolder> call =  restAPI.login(userCredentials);
+        call.enqueue(new Callback<TokenHolder>() {
+            @Override
+            public void onResponse(Call<TokenHolder> call, Response<TokenHolder> response) {
+                //retrofit authentication token save
+
+                if(response.isSuccessful()){
+                    Log.d("token", response.body().getToken());
+
+                    //add token
+                    
+
+                    openDeviceChoiceActivity();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TokenHolder> call, Throwable t) {
+                openAlert(v);
+            }
+        });
+
+    }
+
+    public void openDeviceChoiceActivity(){
         Intent intent = new Intent(this, DeviceChoiceActivity.class);
         startActivity(intent);
     }
