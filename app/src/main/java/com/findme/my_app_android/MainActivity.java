@@ -12,10 +12,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.findme.my_app_android.interfaces.RESTAPInterface;
+import com.findme.my_app_android.models.Device;
 import com.findme.my_app_android.models.User;
 import com.findme.my_app_android.models.UserCredentials;
 import com.findme.my_app_android.security.TokenHolder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private RESTAPInterface restAPI;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private User loginUser;
-    private List<User> users = new ArrayList<User>();
+    private List<User> users = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         restAPI = retrofit.create(RESTAPInterface.class);
 
-        //getAllUsers();
 
         loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -60,32 +63,16 @@ public class MainActivity extends AppCompatActivity {
                 String password = passwordEditText.getText().toString();
                 Log.d("login: ", login);
                 Log.d("password: ", password);
-                UserCredentials userCredentials = new UserCredentials();
-                userCredentials.username=login;
-                userCredentials.password=password;
+                UserCredentials.getInstance().setUsername(login);
+                UserCredentials.getInstance().setPassword(password);
 
-                login(userCredentials, v);
-                //sprawdzenie czy istnieje taki użytkownik i jesli tak to zalogowanie
-                /*boolean isRegistered = false;
-                for(User u : users)
-                {
-                    if((u.getLogin().equals(login)) && (u.getPassword().equals(password))){
-                        isRegistered = true;
-                        loginUser = u;
-                    }
-                }
-
-                if(isRegistered)
-                    openDeviceChoiceActivity();
-                else
-                {
-                    openAlert(v);
-                }*/
+                login(UserCredentials.getInstance(), v);
             }
         });
     }
 
     private void getAllUsers() {
+
         compositeDisposable.add(restAPI.getUsers()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -105,14 +92,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<TokenHolder> call, Response<TokenHolder> response) {
                 //retrofit authentication token save
-
                 if(response.isSuccessful()){
                     Log.d("token", response.body().getToken());
 
                     //add token
-                    
+                    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+                    httpClient.addInterceptor(new Interceptor() {
+                        @Override
+                        public Response intercept(Chain chain) throws IOException {
+                            Request original = chain.request();
+                            Request request = original.newBuilder()
+                                    .removeHeader("Authorization")
+                                    .removeHeader("Content-type")
+                                    .removeHeader("User-Agent")
+                                    .addHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8")
+                                    .addHeader("Accept-Language", "en-US")
+                                    .addHeader("User-Agent", ApiConfig.userAgent)
+                                    .method(original.method(), original.body())
+                                    .build();
+                            
+                            return chain.proceed(request);
+                        }
+                    });
+                    OkHttpClient client = httpClient.build();
 
                     openDeviceChoiceActivity();
+                }
+                else{
+                    openAlert(v);
                 }
             }
 
