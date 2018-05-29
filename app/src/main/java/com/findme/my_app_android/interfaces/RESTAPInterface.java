@@ -12,24 +12,28 @@ import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface RESTAPInterface {
 
     //users
     @GET("/users/all")
-    Observable<List<User>> getUsers();
+    Observable<List<User>> getUsers(@Header("Authorization") String token);
 
     //devices
     @GET("/devices/all")
-    Observable<List<Device>> getDevices();
+    Observable<List<Device>> getAllDevices(@Header("Authorization") String token);
+
+    @GET("/devices/forcurrentuser")
+    Observable<List<Device>> getDevicesForCurrentUser(@Header("Authorization") String token);
 
     @POST("/devices/add")
-    Call<Device> addDevice(@Body Device device);
+    Call<Device> addDevice(@Body Device device, @Header("Authorization") String token);
 
     //locations
     @POST("/locations/add")
-    Call<Location> updateLocation(@Body Location location);
+    Call<Location> updateLocation(@Body Location location, @Header("Authorization") String token);
 
     //security authentication
     @POST("/login")

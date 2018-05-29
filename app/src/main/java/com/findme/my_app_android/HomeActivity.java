@@ -12,6 +12,10 @@ import com.findme.my_app_android.models.Device;
 import com.findme.my_app_android.models.Location;
 import com.findme.my_app_android.models.User;
 import com.findme.my_app_android.models.UserCredentials;
+import com.findme.my_app_android.security.TokenHolder;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,27 +30,16 @@ public class HomeActivity extends AppCompatActivity {
 
     private Button startConnectionButton;
     private Button signOutButton;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private RESTAPInterface restAPI;
-    private List<Device> devices = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //Init API
-        Retrofit retrofit = RetrofitClient.getInstance();
-        restAPI = retrofit.create(RESTAPInterface.class);
-
         startConnectionButton = findViewById(R.id.startConnectionButton);
         startConnectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //pobieranie urządzeń użytkownika
-                getAllDevicesForCurrentUser();
-
-                openConnectionActivity();
             }
         });
 
@@ -57,20 +50,6 @@ public class HomeActivity extends AppCompatActivity {
                 openMainActivity();
             }
         });
-    }
-
-    public void getAllDevicesForCurrentUser(){
-        compositeDisposable.add(restAPI.getDevices()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Device>>() {
-                    @Override
-                    public void accept(List<Device> devices) throws Exception {
-                        for(Device d: devices)
-                            Log.d("device:" , d.getConnectionName());
-                    }
-                }));
-
     }
 
     public void openConnectionActivity(){

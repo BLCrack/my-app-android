@@ -1,14 +1,22 @@
 package com.findme.my_app_android.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.sql.Date;
 import java.sql.Time;
 
 public class Location {
+    @Expose
     private int id;
+    @Expose
     private float gpsLatitude;
+    @Expose
     private float gpsLongitude;
+    @Expose(deserialize = false)
     private Date date;
+    @Expose(deserialize = false)
     private Time time;
+    @Expose
     private Device device;
 
     public Location(int id, float gpsLatitude, float gpsLongitude, Date date, Time time, Device device) {

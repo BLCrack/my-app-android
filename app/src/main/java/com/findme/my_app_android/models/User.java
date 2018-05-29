@@ -1,8 +1,13 @@
 package com.findme.my_app_android.models;
 
+import com.google.gson.annotations.Expose;
+
 public class User {
+    @Expose
     private int id;
+    @Expose
     private String login;
+    @Expose
     private String password;
 
     public User(int id, String login, String password) {

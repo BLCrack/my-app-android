@@ -1,18 +1,27 @@
 package com.findme.my_app_android.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.sql.Date;
 
 public class Device {
+    @Expose(serialize = false)
     private int id;
-    private int phoneNumber;
+    @Expose
+    private String phoneNumber;
+    @Expose
     private String connectionName;
+    @Expose
     private String deviceName;
+    @Expose(deserialize = false)
     private Date startConnection;
+    @Expose(deserialize = false)
     private Location actualLocation;
+    @Expose
     private User owner;
 
 
-    public Device(int id, int phoneNumber, String connectionName, String deviceName, Date startConnection, Location actualLocation, User owner) {
+    public Device(int id, String phoneNumber, String connectionName, String deviceName, Date startConnection, Location actualLocation, User owner) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.connectionName = connectionName;
@@ -30,11 +39,11 @@ public class Device {
         this.id = id;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -58,8 +67,7 @@ public class Device {
         return startConnection;
     }
 
-    public void setStartConnection(Date startConnection) {
-        this.startConnection = startConnection;
+    public void setStartConnection(Date startConnection) { this.startConnection = startConnection;
     }
 
     public Location getActualLocation() {

@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //logowanie
                 EditText loginEditText = findViewById(R.id.loginEditText);
                 String login = loginEditText.getText().toString();
@@ -71,21 +70,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getAllUsers() {
-
-        compositeDisposable.add(restAPI.getUsers()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<User>>() {
-                    @Override
-                    public void accept(List<User> allusers) throws Exception {
-                        users = allusers;
-                        for(User u: allusers)
-                            Log.d("DANE MOJE", u.getLogin());
-                    }
-                }));
-    }
-
     private void login(UserCredentials userCredentials, final View v){
         Call<TokenHolder> call =  restAPI.login(userCredentials);
         call.enqueue(new Callback<TokenHolder>() {
@@ -94,28 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 //retrofit authentication token save
                 if(response.isSuccessful()){
                     Log.d("token", response.body().getToken());
-
                     //add token
-                    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-                    httpClient.addInterceptor(new Interceptor() {
-                        @Override
-                        public Response intercept(Chain chain) throws IOException {
-                            Request original = chain.request();
-                            Request request = original.newBuilder()
-                                    .removeHeader("Authorization")
-                                    .removeHeader("Content-type")
-                                    .removeHeader("User-Agent")
-                                    .addHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8")
-                                    .addHeader("Accept-Language", "en-US")
-                                    .addHeader("User-Agent", ApiConfig.userAgent)
-                                    .method(original.method(), original.body())
-                                    .build();
-                            
-                            return chain.proceed(request);
-                        }
-                    });
-                    OkHttpClient client = httpClient.build();
-
+                    TokenHolder.getInstance().setToken(response.body().getToken());
                     openDeviceChoiceActivity();
                 }
                 else{
