@@ -44,23 +44,4 @@
         android:text="Nie jesteś połączony."
         android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="194dp"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="208dp"
-        android:layout_height="40dp"
-        android:layout_above="@+id/editText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-194dp"
-        android:text="Nazwa połączenia"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 </RelativeLayout>

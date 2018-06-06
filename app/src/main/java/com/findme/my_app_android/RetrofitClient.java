@@ -17,7 +17,7 @@ public class RetrofitClient {
                     .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 
             ourInstance = new Retrofit.Builder()
-                    .baseUrl("http://192.168.137.122:8080")
+                    .baseUrl("http://172.20.10.2:8080")
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();

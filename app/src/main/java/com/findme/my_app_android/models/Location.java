@@ -13,13 +13,13 @@ public class Location {
     @Expose
     private float gpsLongitude;
     @Expose(deserialize = false)
-    private Date date;
+    private String date;
     @Expose(deserialize = false)
-    private Time time;
+    private String time;
     @Expose
     private Device device;
 
-    public Location(int id, float gpsLatitude, float gpsLongitude, Date date, Time time, Device device) {
+    public Location(int id, float gpsLatitude, float gpsLongitude, String date, String time, Device device) {
         this.id = id;
         this.gpsLatitude = gpsLatitude;
         this.gpsLongitude = gpsLongitude;
@@ -52,19 +52,19 @@ public class Location {
         this.gpsLongitude = gpsLongitude;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

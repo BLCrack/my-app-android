@@ -14,14 +14,14 @@ public class Device {
     @Expose
     private String deviceName;
     @Expose(deserialize = false)
-    private Date startConnection;
+    private String startConnection;
     @Expose(deserialize = false)
     private Location actualLocation;
     @Expose
     private User owner;
 
 
-    public Device(int id, String phoneNumber, String connectionName, String deviceName, Date startConnection, Location actualLocation, User owner) {
+    public Device(int id, String phoneNumber, String connectionName, String deviceName, String startConnection, Location actualLocation, User owner) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.connectionName = connectionName;
@@ -63,11 +63,11 @@ public class Device {
         this.deviceName = deviceName;
     }
 
-    public Date getStartConnection() {
+    public String getStartConnection() {
         return startConnection;
     }
 
-    public void setStartConnection(Date startConnection) { this.startConnection = startConnection;
+    public void setStartConnection(String startConnection) { this.startConnection = startConnection;
     }
 
     public Location getActualLocation() {

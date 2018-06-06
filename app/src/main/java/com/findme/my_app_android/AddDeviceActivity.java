@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,9 +13,17 @@ import android.widget.Toast;
 
 import com.findme.my_app_android.interfaces.RESTAPInterface;
 import com.findme.my_app_android.models.Device;
+import com.findme.my_app_android.models.Location;
+import com.findme.my_app_android.models.User;
+import com.findme.my_app_android.models.UserCredentials;
 import com.findme.my_app_android.security.TokenHolder;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -29,9 +38,12 @@ import retrofit2.Retrofit;
 public class AddDeviceActivity extends AppCompatActivity {
 
     private Button newDeviceAcceptButton;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private RESTAPInterface restAPI;
     private List<Device> devices = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+    private User actualUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +66,9 @@ public class AddDeviceActivity extends AppCompatActivity {
                 String connectionName = connectionNameEditText.getText().toString();
                 String deviceName = deviceNameEditText.getText().toString();
 
+                //get user info
+                getUserInfo();
+
                 //pobranie wszystkich urządzen z bazy
                 getAllDevices();
                 //spr czy takie istnieje juz po numerze tel
@@ -66,7 +81,19 @@ public class AddDeviceActivity extends AppCompatActivity {
                 if(isExsist)
                     openDeviceExistAlert();
                 else{
-                    Device device = new Device(1, phoneNumber,connectionName,deviceName,null,null,null);
+                    //data and time
+                    Date date = new Date(Calendar.getInstance().getTime().getTime());
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String actualDate = simpleDateFormat.format(date);
+                    DateFormat df = new SimpleDateFormat("HH:mm");
+                    String actualTime = df.format(Calendar.getInstance().getTime());
+                    Log.d("time:", actualTime);
+
+                    //location
+                    //Location location = new Location(1, 0,0,actualDate,null, null);
+
+                    //add device
+                    Device device = new Device(1, phoneNumber,connectionName,deviceName, actualDate,null,actualUser);
                     addDevice(device);
                     Toast.makeText(AddDeviceActivity.this, "Dodano poprawnie urządzenie", Toast.LENGTH_LONG).show();
                     openHomeActivity();
@@ -79,6 +106,24 @@ public class AddDeviceActivity extends AppCompatActivity {
     public void openHomeActivity(){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    public void getUserInfo(){
+        compositeDisposable.add(restAPI.getUsers("Bearer " + TokenHolder.getInstance().getToken())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<List<User>>() {
+            @Override
+            public void accept(List<User> users) throws Exception {
+                Log.d("rozmiar:", "users=>"+ users.size());
+                for(User usr: users){
+                    if(UserCredentials.getInstance().getUsername().equals(usr.getLogin())) {
+                        actualUser = new User(usr.getId(), usr.getLogin(), usr.getPassword());
+                        break;
+                    }
+                }
+            }
+        }));
     }
 
     public void getAllDevices(){
