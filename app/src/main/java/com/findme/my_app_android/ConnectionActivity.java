@@ -50,21 +50,6 @@ public class ConnectionActivity extends AppCompatActivity {
         }
     }
 
-    public void updateLocation(Location location){
-        Call<Location> call = restAPI.updateLocation(location, "Bearer " + TokenHolder.getInstance().getToken());
-        call.enqueue(new Callback<Location>() {
-            @Override
-            public void onResponse(Call<Location> call, Response<Location> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<Location> call, Throwable t) {
-
-            }
-        });
-    }
-
     public void openHomeActivity(){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);

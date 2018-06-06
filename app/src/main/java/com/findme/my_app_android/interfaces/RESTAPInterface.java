@@ -33,7 +33,7 @@ public interface RESTAPInterface {
 
     //locations
     @POST("/locations/add")
-    Call<Location> updateLocation(@Body Location location, @Header("Authorization") String token);
+    Call<Location> addLocation(@Body Location location, @Header("Authorization") String token);
 
     //security authentication
     @POST("/login")

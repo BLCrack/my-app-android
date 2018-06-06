@@ -42,7 +42,7 @@ public class AddDeviceActivity extends AppCompatActivity {
     private RESTAPInterface restAPI;
     private List<Device> devices = new ArrayList<>();
     private List<User> users = new ArrayList<>();
-    private User actualUser;
+    private User actualUser = new User(1, "admin", "admin");
 
 
     @Override
@@ -85,16 +85,18 @@ public class AddDeviceActivity extends AppCompatActivity {
                     Date date = new Date(Calendar.getInstance().getTime().getTime());
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String actualDate = simpleDateFormat.format(date);
-                    DateFormat df = new SimpleDateFormat("HH:mm");
+                    DateFormat df = new SimpleDateFormat("HH:mm:ss");
                     String actualTime = df.format(Calendar.getInstance().getTime());
                     Log.d("time:", actualTime);
-
-                    //location
-                    //Location location = new Location(1, 0,0,actualDate,null, null);
 
                     //add device
                     Device device = new Device(1, phoneNumber,connectionName,deviceName, actualDate,null,actualUser);
                     addDevice(device);
+
+                    //location
+                    Location location = new Location(1, 0,0,actualDate,actualTime, device);
+                    addLocation(location);
+                    
                     Toast.makeText(AddDeviceActivity.this, "Dodano poprawnie urządzenie", Toast.LENGTH_LONG).show();
                     openHomeActivity();
                 }
@@ -152,7 +154,20 @@ public class AddDeviceActivity extends AppCompatActivity {
             }
         });
     }
+    public void addLocation(Location location){
+        Call<Location> call = restAPI.addLocation(location, "Bearer " + TokenHolder.getInstance().getToken());
+        call.enqueue(new Callback<Location>() {
+            @Override
+            public void onResponse(Call<Location> call, Response<Location> response) {
 
+            }
+
+            @Override
+            public void onFailure(Call<Location> call, Throwable t) {
+
+            }
+        });
+    }
     public void initializeDevices(List<Device> devices){
         this.devices = devices;
     }

@@ -40,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         startConnectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                openConnectionActivity();
             }
         });
 
