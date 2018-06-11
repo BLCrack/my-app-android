@@ -14,6 +14,8 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface RESTAPInterface {
 
@@ -29,13 +31,17 @@ public interface RESTAPInterface {
     Observable<List<Device>> getDevicesForCurrentUser(@Header("Authorization") String token);
 
     @POST("/devices/add")
-    Call<Device> addDevice(@Body Device device, @Header("Authorization") String token);
+    Observable<Device> addDevice(@Body Device device, @Header("Authorization") String token);
 
     //locations
     @POST("/locations/add")
-    Call<Location> addLocation(@Body Location location, @Header("Authorization") String token);
+    Observable<Location> addLocation(@Body Location location, @Header("Authorization") String token);
 
     //security authentication
     @POST("/login")
     Call<TokenHolder> login(@Body UserCredentials userCredentials);
+
+    //updating locations
+    @PUT("/locations/update/{id}")
+    Observable<Location> putLocation(@Body Location location, @Header("Authorization") String token, @Path("id") int locationId);
 }

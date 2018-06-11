@@ -30,27 +30,32 @@ public class ConnectionActivity extends AppCompatActivity {
         stopConnectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((FindMeApplication) getApplication()).stopSendingLocation();
                 openHomeActivity();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         //check location
         locationAPI = new LocationAPI(ConnectionActivity.this);
 
-        if(locationAPI.isCanGetLocation()){
+        if (locationAPI.isCanGetLocation()) {
             double longitude = locationAPI.getLongitude();
             double latitude = locationAPI.getLatitude();
             Log.d("long: ", String.valueOf(longitude));
             Log.d("lat: ", String.valueOf(latitude));
-            //wysyłanie lokacji urządzenia co minutę do bazy
-            //updateLocation();
-        }
-        else {
+
+            ((FindMeApplication) getApplication()).sendLocation();
+        } else {
             locationAPI.showSettingsAlert();
         }
     }
 
-    public void openHomeActivity(){
+    public void openHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }

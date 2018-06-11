@@ -26,11 +26,11 @@ import retrofit2.Retrofit;
 
 public class DeviceChoiceActivity extends AppCompatActivity {
 
-   private Button acceptNumberButton;
-   private Button addDeviceButton;
-   private CompositeDisposable compositeDisposable = new CompositeDisposable();
-   private RESTAPInterface restAPI;
-   private List<Device> devices = new ArrayList<>();
+    private Button acceptNumberButton;
+    private Button addDeviceButton;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private RESTAPInterface restAPI;
+    private List<Device> devices = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +51,22 @@ public class DeviceChoiceActivity extends AppCompatActivity {
                 EditText phoneNumberEditText = findViewById(R.id.phoneNumberEditText2);
                 String phoneNumber = phoneNumberEditText.getText().toString();
                 boolean isExsist = false;
+                Device device = null;
 
-                for(Device d: devices)
-                {
+                for (Device d : devices) {
                     Log.d("phone:", d.getPhoneNumber());
-                    if(d.getPhoneNumber().equals(phoneNumber))
+                    if (d.getPhoneNumber().equals(phoneNumber)) {
                         isExsist = true;
+                        device = d;
+                    }
                 }
 
-                if(isExsist)
+                if (isExsist) {
+                    ((FindMeApplication) getApplication()).setDevice(device);
                     openHomeActivity();
-                else
+                } else {
                     openDeviceNoFoundAlert();
+                }
             }
         });
 
@@ -75,7 +79,7 @@ public class DeviceChoiceActivity extends AppCompatActivity {
         });
     }
 
-    public void getAllDevicesForCurrentUser(){
+    public void getAllDevicesForCurrentUser() {
         compositeDisposable.add(restAPI.getDevicesForCurrentUser("Bearer " + TokenHolder.getInstance().getToken())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -88,29 +92,28 @@ public class DeviceChoiceActivity extends AppCompatActivity {
     }
 
 
-
-    public void initializeDevices(List<Device> devices){
+    public void initializeDevices(List<Device> devices) {
         this.devices = devices;
     }
 
-    public void openHomeActivity(){
+    public void openHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 
-    public void openAddDeviceActivity(){
+    public void openAddDeviceActivity() {
         Intent intent = new Intent(this, AddDeviceActivity.class);
         startActivity(intent);
     }
 
-    public void openDeviceNoFoundAlert(){
+    public void openDeviceNoFoundAlert() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Nie ma takiego urządzenia lub nie należy do Ciebie!");
         alertDialogBuilder.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        Toast.makeText(DeviceChoiceActivity.this,"Możesz dodać nowe urządzenie",Toast.LENGTH_LONG).show();
+                        Toast.makeText(DeviceChoiceActivity.this, "Możesz dodać nowe urządzenie", Toast.LENGTH_LONG).show();
                     }
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
