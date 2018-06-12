@@ -68,7 +68,8 @@ public class FindMeApplication extends Application {
         String actualTime = df.format(Calendar.getInstance().getTime());
 
         this.locationId = device.getId();
-        Location location = new Location(this.locationId, (float) latitude, (float) longitude, actualDate, actualTime, null);
+        Location location = new Location(this.locationId, (float) latitude, (float) longitude, actualDate, actualTime);
+
 
         Log.e("Location", "latitude: " + latitude);
         Log.e("Location", "longitude: " + longitude);

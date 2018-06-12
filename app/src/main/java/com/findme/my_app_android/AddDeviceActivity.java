@@ -194,7 +194,7 @@ public class AddDeviceActivity extends AppCompatActivity {
                         DateFormat df = new SimpleDateFormat("HH:mm:ss");
                         String actualTime = df.format(Calendar.getInstance().getTime());
 
-                        Location location = new Location(device.getId(), 0, 0, actualDate, actualTime, null);
+                        Location location = new Location(device.getId(), 0, 0, actualDate, actualTime);
                         addLocation(location);
 
                         ((FindMeApplication) getApplication()).setDevice(device);

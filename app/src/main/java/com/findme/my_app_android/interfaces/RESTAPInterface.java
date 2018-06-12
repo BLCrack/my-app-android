@@ -42,8 +42,8 @@ public interface RESTAPInterface {
     Call<TokenHolder> login(@Body UserCredentials userCredentials);
 
     //updating locations
-    @PUT("/locations/update/{id}")
-    Observable<Location> putLocation(@Body Location location, @Header("Authorization") String token, @Path("id") int locationId);
+    @PUT("/devices/update/location/{id}")
+    Observable<Location> putLocation(@Body Location location, @Header("Authorization") String token, @Path("id") int deviceId);
 
     @PUT("/devices/all/{id}")
     Observable<Device> putDevice(@Body Device device, @Header("Authorization") String token, @Path("id") int deviceId);

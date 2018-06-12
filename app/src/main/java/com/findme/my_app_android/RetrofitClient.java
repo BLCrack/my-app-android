@@ -24,11 +24,9 @@ public class RetrofitClient {
                     .addInterceptor(logging)
                     .build();
 
-            String baseUrl = "http://172.20.10.2:8080";
-
-            // tutaj adres IP z dnia 12.06
-            baseUrl = "http://192.168.43.194:8080";
-
+            //Adres serwera VPS
+            String baseUrl = "http://77.55.218.238:8080";
+            
             ourInstance = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create(gson))
