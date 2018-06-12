@@ -24,8 +24,13 @@ public class RetrofitClient {
                     .addInterceptor(logging)
                     .build();
 
+            String baseUrl = "http://172.20.10.2:8080";
+
+            // tutaj adres IP z dnia 12.06
+            baseUrl = "http://192.168.43.194:8080";
+
             ourInstance = new Retrofit.Builder()
-                    .baseUrl("http://172.20.10.2:8080")
+                    .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(client)

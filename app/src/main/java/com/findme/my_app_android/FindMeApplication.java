@@ -56,8 +56,6 @@ public class FindMeApplication extends Application {
 
 
     public void sendLocation() {
-        // TODO: 11.06.2018 wysylanie lokalizacji 
-
         locationAPI = new LocationAPI(this);
         double longitude = locationAPI.getLongitude();
         double latitude = locationAPI.getLatitude();
@@ -68,7 +66,7 @@ public class FindMeApplication extends Application {
         DateFormat df = new SimpleDateFormat("HH:mm:ss");
         String actualTime = df.format(Calendar.getInstance().getTime());
 
-       // Location location = new Location(device.getId(), (float) latitude, (float) longitude, actualDate, actualTime, device);
+        this.locationId = device.getId();
         Location location = new Location(this.locationId, (float) latitude, (float) longitude, actualDate, actualTime, device);
 
 
