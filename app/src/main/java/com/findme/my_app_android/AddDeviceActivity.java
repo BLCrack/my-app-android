@@ -194,7 +194,7 @@ public class AddDeviceActivity extends AppCompatActivity {
                         DateFormat df = new SimpleDateFormat("HH:mm:ss");
                         String actualTime = df.format(Calendar.getInstance().getTime());
 
-                        Location location = new Location(device.getId(), 0, 0, actualDate, actualTime, device);
+                        Location location = new Location(device.getId(), 0, 0, actualDate, actualTime, null);
                         addLocation(location);
 
                         ((FindMeApplication) getApplication()).setDevice(device);
@@ -213,7 +213,37 @@ public class AddDeviceActivity extends AppCompatActivity {
                 });
     }
 
-    public void addLocation(Location location) {
+    public void putDeviceData(Location location) {
+        Device device = ((FindMeApplication) getApplication()).getDevice();
+        device.setActualLocation(location);
+        this.restAPI.putDevice(device, "Bearer " + TokenHolder.getInstance().getToken(), device.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Device>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Device device) {
+                        ((FindMeApplication) getApplication()).setDevice(device);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Toast.makeText(AddDeviceActivity.this, "Dodano poprawnie urządzenie", Toast.LENGTH_LONG).show();
+                        openHomeActivity();
+                    }
+                });
+    }
+
+    public void addLocation(final Location location) {
         this.restAPI.addLocation(location, "Bearer " + TokenHolder.getInstance().getToken())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -225,20 +255,20 @@ public class AddDeviceActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(Location location) {
-                        if(location!=null){
-                            ((FindMeApplication)getApplication()).setLocationId(location.getId());
+                        if (location != null) {
+                            ((FindMeApplication) getApplication()).setLocationId(location.getId());
+                            putDeviceData(location);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(AddDeviceActivity.this, "Nie udało się dodać lokalizacji", Toast.LENGTH_LONG).show();
+                        addLocation(location);
                     }
 
                     @Override
                     public void onComplete() {
-                        Toast.makeText(AddDeviceActivity.this, "Dodano poprawnie urządzenie", Toast.LENGTH_LONG).show();
-                        openHomeActivity();
+
                     }
                 });
     }
