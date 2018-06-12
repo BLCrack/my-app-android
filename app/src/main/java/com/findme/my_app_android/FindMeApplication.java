@@ -2,6 +2,7 @@ package com.findme.my_app_android;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.findme.my_app_android.interfaces.RESTAPInterface;
 import com.findme.my_app_android.models.Device;
@@ -69,7 +70,8 @@ public class FindMeApplication extends Application {
         this.locationId = device.getId();
         Location location = new Location(this.locationId, (float) latitude, (float) longitude, actualDate, actualTime, device);
 
-
+        Log.e("Location", "latitude: " + latitude);
+        Log.e("Location", "longitude: " + longitude);
 
         if (this.disposableSend != null && !this.disposableSend.isDisposed()) {
             this.disposableSend.dispose();

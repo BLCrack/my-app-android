@@ -48,17 +48,18 @@ public class HomeActivity extends AppCompatActivity {
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((FindMeApplication) getApplication()).stopSendingLocation();
                 openMainActivity();
             }
         });
     }
 
-    public void openConnectionActivity(){
+    public void openConnectionActivity() {
         Intent intent = new Intent(this, ConnectionActivity.class);
         startActivity(intent);
     }
 
-    public void openMainActivity(){
+    public void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
