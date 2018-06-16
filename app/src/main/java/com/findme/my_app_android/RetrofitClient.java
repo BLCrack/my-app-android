@@ -26,7 +26,7 @@ public class RetrofitClient {
 
             //Adres serwera VPS
             String baseUrl = "http://77.55.218.238:8080";
-            
+
             ourInstance = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create(gson))
